@@ -20,7 +20,7 @@ import time
 
 STDIN, STDOUT, STDERR = 0, 1, 2
 DEFAULT_BUFF_SIZE = 128
-WAKEUP = '!'
+WAKEUP = "!"
 
 
 def xwrite(fileno, data):
@@ -82,8 +82,8 @@ class Script(object):
 
         if self.resize_event.is_set():
             self.resize_event.clear()
-            data = fcntl.ioctl(STDIN, termios.TIOCGWINSZ, '0123')
-            lines, columns = struct.unpack('hh', data)
+            data = fcntl.ioctl(STDIN, termios.TIOCGWINSZ, "0123")
+            lines, columns = struct.unpack("hh", data)
             self.recorder.record_window_resize(lines, columns)
             fcntl.ioctl(self.slave, termios.TIOCSWINSZ, data)
 
@@ -93,11 +93,7 @@ class Script(object):
 
         self.start_event.set()
 
-        io_actions = {
-            STDIN: self._on_stdin_input,
-            self.master: self._on_pty_input,
-            self.wakeup_r: self._on_wakeup,
-        }
+        io_actions = {STDIN: self._on_stdin_input, self.master: self._on_pty_input, self.wakeup_r: self._on_wakeup}
 
         rlist = list(io_actions.keys())
 
@@ -107,7 +103,7 @@ class Script(object):
             try:
                 activity = select.select(rlist, [], [], self.select_timeout)[0]
             except select.error as err:
-                assert err.args[0] != errno.EINTR, 'Should not be getting interrupted syscalls in thread'
+                assert err.args[0] != errno.EINTR, "Should not be getting interrupted syscalls in thread"
                 raise
 
             if activity:
@@ -120,7 +116,7 @@ class Script(object):
                 try:
                     io_actions[active_fd]()
                 except OSError as ose:
-                    assert ose.errno != errno.EINTR, 'Should not be getting interrupted syscalls in thread'
+                    assert ose.errno != errno.EINTR, "Should not be getting interrupted syscalls in thread"
                     raise
 
     def _on_sigchild(self, *args, **kwargs):  # pylint:disable=unused-argument
@@ -141,7 +137,7 @@ class Script(object):
     def _run_parent(self):
         """Parent process main loop
         """
-        io_thread = threading.Thread(group=None, target=self._io_loop, name='ptysnoop_io_thread')
+        io_thread = threading.Thread(group=None, target=self._io_loop, name="ptysnoop_io_thread")
         io_thread.start()
 
         signal.signal(signal.SIGCHLD, self._on_sigchild)
@@ -157,7 +153,7 @@ class Script(object):
         """
         # get our terminal params
         self.tcattr = termios.tcgetattr(STDIN)
-        winsize = fcntl.ioctl(STDIN, termios.TIOCGWINSZ, '0123')
+        winsize = fcntl.ioctl(STDIN, termios.TIOCGWINSZ, "0123")
         # open a pty
         self.master, self.slave = os.openpty()
         # set the slave's terminal params
@@ -181,8 +177,16 @@ class Script(object):
         assert self.tcattr is not None
         iflag, oflag, cflag, lflag, ispeed, ospeed, chars = self.tcattr  # pylint:disable=unpacking-non-sequence
         # equivalent to cfmakeraw
-        iflag &= ~(termios.IGNBRK | termios.BRKINT | termios.PARMRK | termios.ISTRIP | termios.INLCR |
-                   termios.IGNCR | termios.ICRNL | termios.IXON)
+        iflag &= ~(
+            termios.IGNBRK
+            | termios.BRKINT
+            | termios.PARMRK
+            | termios.ISTRIP
+            | termios.INLCR
+            | termios.IGNCR
+            | termios.ICRNL
+            | termios.IXON
+        )
         oflag &= ~termios.OPOST
         lflag &= ~(termios.ECHO | termios.ECHONL | termios.ICANON | termios.ISIG | termios.IEXTEN)
         cflag &= ~(termios.CSIZE | termios.PARENB)
@@ -202,7 +206,7 @@ class Script(object):
             self.recorder.end(exit_code)
             return exit_code
         else:
-            logging.warn('waitpid(%d) returned %d %d', self.child_pid, pid, status)
+            logging.warn("waitpid(%d) returned %d %d", self.child_pid, pid, status)
 
     def run(self, callback, parent_callback, *args, **kwargs):
         """Setup, fork and run
@@ -210,10 +214,10 @@ class Script(object):
 
         if threading.active_count() > 1:
             threads = threading.enumerate()
-            logging.warning('Programming error: there are %d active threads (list follows)', len(threads))
+            logging.warning("Programming error: there are %d active threads (list follows)", len(threads))
             for thread in threads:
-                logging.warning('  - %s', thread)
-            logging.warning('Creating threads before forking can lead to issues and should be avoided')
+                logging.warning("  - %s", thread)
+            logging.warning("Creating threads before forking can lead to issues and should be avoided")
 
         self._open_pty()
         self._fix_tty()

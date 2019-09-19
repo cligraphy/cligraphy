@@ -11,14 +11,14 @@ def prompt_int(prompt, value=None, default=None):
             value = int(value)
         except TypeError:
             value = input(prompt)
-            if value == '':
+            if value == "":
                 value = default
     return value
 
 
 def prompt_enter_choice(prompt, values, exceptions=None):
-    prompt = '%s (%s)? ' % (prompt, '/'.join(values))
-    values = { value.upper(): value for value in values }
+    prompt = "%s (%s)? " % (prompt, "/".join(values))
+    values = {value.upper(): value for value in values}
     while True:
         try:
             value = input(prompt).upper()

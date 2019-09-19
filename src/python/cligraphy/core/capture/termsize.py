@@ -15,7 +15,7 @@ def _ioctl_get_window_size(fd):
     """Calls TIOCGWINSZ for the given fd
     """
     try:
-        return struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
+        return struct.unpack("hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, "1234"))
     except IOError:
         return
 

@@ -8,6 +8,7 @@ Cligraphy tools
 from attrdict import AttrDict
 
 import yaml
+
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
 except ImportError:
@@ -21,7 +22,6 @@ import logging
 
 
 class Context(object):
-
     def __init__(self):
         self._cligraph = None
 
@@ -42,11 +42,10 @@ class Context(object):
         return self._cligraph.parser
 
 
-
 ctx = Context()
 
 
-__CONF_SUBST_RE = re.compile(r'(%cfg.([a-zA-Z0-9.-_]+)%)')
+__CONF_SUBST_RE = re.compile(r"(%cfg.([a-zA-Z0-9.-_]+)%)")
 
 
 def dictify_recursive(obj):
@@ -82,7 +81,7 @@ def find_node(node, path, add=False):
 
 def get(root, confkey):
     """Config key getter"""
-    return find_node(root, confkey.split('.'))
+    return find_node(root, confkey.split("."))
 
 
 def _resolve_config(root, subst_re, node=None):
@@ -99,7 +98,7 @@ def _resolve_config(root, subst_re, node=None):
                 if confval is not None and (not isinstance(confval, str) or subst_re.search(confval) is None):
                     node[key] = val = val.replace(match, str(confval))
                 else:
-                    remaining.append('%s: %s' % (key, val))
+                    remaining.append("%s: %s" % (key, val))
     return remaining
 
 
@@ -112,45 +111,43 @@ def resolve_config(cfg):
         if not remaining or len(remaining) == len(remaining_prev):
             break
     if remaining:
-        raise Exception('Incorrect configuration file: could not resolve some configuration variables:  %s' % remaining)
+        raise Exception("Incorrect configuration file: could not resolve some configuration variables:  %s" % remaining)
 
 
 def automatic_configuration(cligraph, layer_name):
     auto_data = {
-        'tool': {
-            'name': cligraph.tool_name,
-            'shortname': cligraph.tool_shortname,
-            'version': '1.0',
-            'repo_path': cligraph.tool_path,
+        "tool": {
+            "name": cligraph.tool_name,
+            "shortname": cligraph.tool_shortname,
+            "version": "1.0",
+            "repo_path": cligraph.tool_path,
         },
-        'repos': {
-            'root': os.path.abspath(os.path.join(cligraph.tool_path, '..')),
-        },
+        "repos": {"root": os.path.abspath(os.path.join(cligraph.tool_path, ".."))},
     }
-    username = os.getenv('USER')
+    username = os.getenv("USER")
     if username:
-        auto_data['user'] = {
-            'name': username,
-            'email': '%s@domain.net' % (username)  # OPEN SOURCE TODO
-        }
+        auto_data["user"] = {"name": username, "email": "%s@domain.net" % (username)}  # OPEN SOURCE TODO
     else:
-        auto_data['user'] = {
-            'name': 'unknown',
-            'email': 'octools-unknown-user@domain.net'  # OPEN SOURCE TODO
-        }
-    auto_data['user']['dotdir'] = os.path.abspath(os.path.expanduser('~/.' + cligraph.tool_shortname))
+        auto_data["user"] = {"name": "unknown", "email": "octools-unknown-user@domain.net"}  # OPEN SOURCE TODO
+    auto_data["user"]["dotdir"] = os.path.abspath(os.path.expanduser("~/." + cligraph.tool_shortname))
     return auto_data
 
 
-def read_configuration(cligraph, custom_suffix=''):
+def read_configuration(cligraph, custom_suffix=""):
     """Read configuration dict for the given tool
     """
 
     cfg = {}
     layers = collections.OrderedDict()
-    layers['auto'] = [automatic_configuration, None]
-    layers['shared'] = [os.path.join(cligraph.tool_path, 'conf/%s.yaml' % cligraph.tool_shortname), None]
-    layers['custom'] = [os.path.join(os.path.abspath(os.path.expanduser('~/.' + cligraph.tool_shortname)), '%s.yaml%s' % (cligraph.tool_shortname, custom_suffix)), None]
+    layers["auto"] = [automatic_configuration, None]
+    layers["shared"] = [os.path.join(cligraph.tool_path, "conf/%s.yaml" % cligraph.tool_shortname), None]
+    layers["custom"] = [
+        os.path.join(
+            os.path.abspath(os.path.expanduser("~/." + cligraph.tool_shortname)),
+            "%s.yaml%s" % (cligraph.tool_shortname, custom_suffix),
+        ),
+        None,
+    ]
 
     for layer_name, layer_data in list(layers.items()):
         if callable(layer_data[0]):
@@ -158,7 +155,7 @@ def read_configuration(cligraph, custom_suffix=''):
         else:
             if not os.path.exists(layer_data[0]):
                 continue
-            with open(layer_data[0], 'r') as filep:
+            with open(layer_data[0], "r") as filep:
                 layer = yaml.load(filep, Loader=Loader)
         layers[layer_name][1] = layer
         if layer:
@@ -173,7 +170,7 @@ def write_configuration_file(filename, conf):
     import shutil
 
     try:
-        shutil.copy2(filename, '%s.back' % filename)
+        shutil.copy2(filename, "%s.back" % filename)
     except IOError:
         pass
 
@@ -182,7 +179,7 @@ def write_configuration_file(filename, conf):
     except OSError:
         pass
 
-    with open(filename, 'w') as filep:
+    with open(filename, "w") as filep:
         yaml.dump(conf, filep, indent=4, default_flow_style=False, Dumper=Dumper)
 
 
@@ -191,22 +188,22 @@ def edit_configuration(tool_name, callback):
     """
     import shutil
 
-    filename = os.path.join(USER_DOTDIR, '%s.yaml' % tool_name)
-    edit_filename = '%s.edit' % filename
+    filename = os.path.join(USER_DOTDIR, "%s.yaml" % tool_name)
+    edit_filename = "%s.edit" % filename
 
     if os.path.exists(edit_filename):
-        logging.warn('Unfinished edit file %s exists, editing that one.', edit_filename)
+        logging.warn("Unfinished edit file %s exists, editing that one.", edit_filename)
     else:
         if os.path.exists(filename):
             shutil.copy2(filename, edit_filename)
         else:
-            with open(edit_filename, 'w') as fp:
-                fp.write('\n')
+            with open(edit_filename, "w") as fp:
+                fp.write("\n")
 
     callback(edit_filename)
 
-    read_configuration(tool_name, custom_suffix='.edit')  # validate that configuration is still readable
+    read_configuration(tool_name, custom_suffix=".edit")  # validate that configuration is still readable
 
     if os.path.exists(filename):
-        shutil.copy2(filename, '%s.back' % filename)
+        shutil.copy2(filename, "%s.back" % filename)
     os.rename(edit_filename, filename)

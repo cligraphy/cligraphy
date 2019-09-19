@@ -9,7 +9,6 @@ from abc import abstractmethod
 
 
 class Recorder(object):
-
     def start(self):
         pass
 
@@ -48,9 +47,8 @@ class Player(object):
 
 
 class NoopOutputRecorder(Recorder):
-
     def output_as_string(self):
-        return '(output discarded)'
+        return "(output discarded)"
 
 
 class BufferingOutputRecorder(Recorder):
@@ -68,7 +66,7 @@ class BufferingOutputRecorder(Recorder):
         """
         self._total_size += len(data)
         if self._remaining_size > 0:
-            part = data[:self._remaining_size]
+            part = data[: self._remaining_size]
             self._buffer.append(part)
             self._remaining_size = max(0, self._remaining_size - len(part))
 
@@ -77,7 +75,7 @@ class BufferingOutputRecorder(Recorder):
         return self._total_size
 
     def output_as_string(self):
-        return ''.join(self._buffer)
+        return "".join(self._buffer)
 
 
 def spawn_and_record(recorder, func, parent_func, *args, **kwargs):

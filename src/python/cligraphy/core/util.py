@@ -12,14 +12,17 @@ import sys
 
 class TimeoutError(Exception):
     """Timeout Error"""
+
     pass
 
 
 @contextmanager
-def timeout(seconds,  error_message='Timeout'):
+def timeout(seconds, error_message="Timeout"):
     """Timeout context manager using SIGALARM."""
+
     def _handle_timeout(signum, frame):  # pylint:disable=unused-argument,missing-docstring
         raise TimeoutError(error_message)
+
     if seconds > 0:
         signal.signal(signal.SIGALRM, _handle_timeout)
         signal.alarm(seconds)
@@ -35,9 +38,9 @@ def undecorate_func(func, decorators=None):
     """
     if decorators is None:
         decorators = []
-    if hasattr(func, 'original_func'):
+    if hasattr(func, "original_func"):
         decorators.append(func)
-        return undecorate_func(getattr(func, 'original_func'), decorators)
+        return undecorate_func(getattr(func, "original_func"), decorators)
     else:
         return func, decorators
 
@@ -64,6 +67,7 @@ def call_chain(chain, *args, **kwargs):
 
 def profiling_wrapper(func):
     import cProfile, io, pstats
+
     pr = cProfile.Profile()
     pr.enable()
     try:
@@ -71,7 +75,7 @@ def profiling_wrapper(func):
     finally:
         pr.disable()
         s = io.StringIO()
-        sortby = 'cumulative'
+        sortby = "cumulative"
         ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
         ps.print_stats()
         print(s.getvalue())
@@ -83,8 +87,9 @@ def pdb_wrapper(func):
     except Exception:
         import pdb
         import traceback
+
         etype, value, tb = sys.exc_info()
-        logging.info('Top level exception caught, entering debugger')
+        logging.info("Top level exception caught, entering debugger")
         traceback.print_exc()
         pdb.post_mortem(tb)
         raise

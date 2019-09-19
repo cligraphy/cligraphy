@@ -20,6 +20,7 @@ def retry(retry_count, exceptions, log_message, retry_sleep=0, backoff=1, maxdel
         :maxdelay int: exponential backoffs can get pretty lengthy. This limits the maximum delay
 
     """
+
     @decorator
     def _retry(f, *args, **kwargs):
         _tries, _delay = retry_count, retry_sleep
@@ -27,15 +28,16 @@ def retry(retry_count, exceptions, log_message, retry_sleep=0, backoff=1, maxdel
             try:
                 return f(*args, **kwargs)
             except (exceptions) as e:
-                logging.debug('Failed to %s. Attempt: %s/%s', log_message, retry_count + 1 - _tries, retry_count)
+                logging.debug("Failed to %s. Attempt: %s/%s", log_message, retry_count + 1 - _tries, retry_count)
                 _tries -= 1
                 if _tries == 0:
-                    logging.error('Failed to %s with %s attempts', log_message, retry_count)
-                    raise(e)
+                    logging.error("Failed to %s with %s attempts", log_message, retry_count)
+                    raise (e)
                 time.sleep(_delay)
                 _delay *= backoff
                 if maxdelay and _delay > maxdelay:
                     _delay = maxdelay
+
     return _retry
 
 
@@ -43,7 +45,7 @@ def chunks(l, n):
     """ Yield successive n-sized chunks from l.
     """
     for i in range(0, len(l), n):
-        yield l[i:i + n]
+        yield l[i : i + n]
 
 
 def is_file(parser, item):
@@ -64,17 +66,16 @@ def is_file(parser, item):
     try:
         f = f.resolve()
     except IOError:
-        parser.error('The file {file!r} does not exist'.format(file=item))
+        parser.error("The file {file!r} does not exist".format(file=item))
     if not f.is_file():
-        parser.error('{item!r} is not a file'.format(item=item))
+        parser.error("{item!r} is not a file".format(item=item))
     try:
-        with f.open('r') as fp:
+        with f.open("r") as fp:
             pass
     except IOError as e:
-        parser.error('{item!r} cannot be opened for reading: {err!s}'.format(
-            item=item, err=e
-        ))
+        parser.error("{item!r} cannot be opened for reading: {err!s}".format(item=item, err=e))
     return f
+
 
 def get_user_choice(prompt, choices, case_lower=True):
     """ prompt user to make a choice. converts choices to lowercase unicode strings
