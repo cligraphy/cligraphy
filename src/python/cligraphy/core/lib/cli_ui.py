@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # Copyright 2015, 2016 Netflix, Inc.
 
+from builtins import input
+
+
 def prompt_int(prompt, value=None, default=None):
     """Prompt user for an int value"""
     while not isinstance(value, int):

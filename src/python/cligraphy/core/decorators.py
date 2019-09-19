@@ -6,6 +6,7 @@
 import cligraphy.core.parsers
 from cligraphy.core.util import undecorate_func
 
+from builtins import input
 from functools import wraps
 import logging
 

@@ -5,6 +5,7 @@ import logging
 import time
 import os.path
 
+from builtins import input
 from decorator import decorator
 from pathlib import Path
 
