@@ -63,18 +63,18 @@ def call_chain(chain, *args, **kwargs):
 
 
 def profiling_wrapper(func):
-    import cProfile, StringIO, pstats
+    import cProfile, io, pstats
     pr = cProfile.Profile()
     pr.enable()
     try:
         func()
     finally:
         pr.disable()
-        s = StringIO.StringIO()
+        s = io.StringIO()
         sortby = 'cumulative'
         ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
         ps.print_stats()
-        print s.getvalue()
+        print(s.getvalue())
 
 
 def pdb_wrapper(func):

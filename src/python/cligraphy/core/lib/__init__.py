@@ -41,7 +41,7 @@ def retry(retry_count, exceptions, log_message, retry_sleep=0, backoff=1, maxdel
 def chunks(l, n):
     """ Yield successive n-sized chunks from l.
     """
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i + n]
 
 
@@ -83,13 +83,13 @@ def get_user_choice(prompt, choices, case_lower=True):
         return: unicode choice
     """
     if case_lower:
-        _vals = [unicode(x).lower() for x in choices]
+        _vals = [str(x).lower() for x in choices]
     else:
-        _vals = [unicode(x) for x in choices]
+        _vals = [str(x) for x in choices]
     while True:
         if case_lower:
-            _input = unicode(raw_input(prompt)).lower()
+            _input = str(input(prompt)).lower()
         else:
-            _input = unicode(raw_input(prompt))
+            _input = str(input(prompt))
         if _input in _vals:
             return _input

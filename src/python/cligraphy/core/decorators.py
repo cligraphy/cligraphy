@@ -59,11 +59,11 @@ def beta(reason='No reason given'):
         def wrapper(*args, **kwargs):
             message = 'WARNING - this command is marked as beta: %s - are you sure you want to continue (y/N)? ' % reason
             logging.warning(message)
-            confirm = raw_input(message)
+            confirm = input(message)
             if confirm and confirm.lower() in ('y', 'yes'):
                 func(*args, **kwargs)
             else:
-                print 'Cancelled'
+                print('Cancelled')
         wrapper.tag = Tag.beta
         wrapper.original_func = func
         return wrapper

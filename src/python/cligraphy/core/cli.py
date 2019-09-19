@@ -29,11 +29,11 @@ import sys
 def _warn_about_bad_non_ascii_chars(args):
     """Detect non-ascii variants of some interesting characters, such as — instead of -"""
     bad_chars = (
-        u'—',
-        u'…',
-        u'“',
-        u'”',
-        u'\u200b',  # zero-width space
+        '—',
+        '…',
+        '“',
+        '”',
+        '\u200b',  # zero-width space
     )
     try:
         line = ' '.join(arg.decode(sys.stdout.encoding or 'UTF-8') for arg in args)
@@ -71,7 +71,7 @@ class _VersionAction(argparse.Action):
             last_commit = subprocess.check_output(['git', 'log', '-1'], stderr=subprocess.PIPE)
         except (subprocess.CalledProcessError, OSError):
             last_commit = '(could not get more recent commit information)'
-        print '%s v%s\n%s' % (ctx.conf.tool.name, ctx.conf.tool.version, last_commit)
+        print('%s v%s\n%s' % (ctx.conf.tool.name, ctx.conf.tool.version, last_commit))
         sys.exit(1)
 
 
@@ -137,7 +137,7 @@ class Cligraph(object):
             return args._func()
         elif argspec.varargs or argspec.keywords or len(argspec.args) > 1:
             kwargs = dict(**vars(args))
-            for kw in kwargs.keys():
+            for kw in list(kwargs.keys()):
                 if kw.startswith('_'):
                     logging.debug('removing internal arg %s', kw)
                     del kwargs[kw]
@@ -146,7 +146,7 @@ class Cligraph(object):
             if argspec.args[0] != 'args':
                 raise Exception('Programming error in command: if main() only has one argument it must be called "args"')
             func = args._func
-            for kw in vars(args).keys():
+            for kw in list(vars(args).keys()):
                 if kw.startswith('_') and kw not in ('_parser', '_cligraph'):  #FIXME(stf/oss) maybe just expose cligraph
                     logging.debug('removing internal arg %s', kw)
                     delattr(args, kw)
@@ -247,7 +247,7 @@ class Cligraph(object):
         """
 
         result = []
-        for module, options in self.conf.commands.items():
+        for module, options in list(self.conf.commands.items()):
             try:
                 if options is None:
                     options = {}

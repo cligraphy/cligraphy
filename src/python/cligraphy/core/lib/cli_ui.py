@@ -7,7 +7,7 @@ def prompt_int(prompt, value=None, default=None):
         try:
             value = int(value)
         except TypeError:
-            value = raw_input(prompt)
+            value = input(prompt)
             if value == '':
                 value = default
     return value
@@ -18,10 +18,10 @@ def prompt_enter_choice(prompt, values, exceptions=None):
     values = { value.upper(): value for value in values }
     while True:
         try:
-            value = raw_input(prompt).upper()
+            value = input(prompt).upper()
         except BaseException as e:
             if exceptions and type(e) in exceptions:
-                print
+                print()
                 return exceptions[type(e)]
             else:
                 raise

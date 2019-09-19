@@ -99,7 +99,7 @@ class Script(object):
             self.wakeup_r: self._on_wakeup,
         }
 
-        rlist = io_actions.keys()
+        rlist = list(io_actions.keys())
 
         self.recorder.start()
 

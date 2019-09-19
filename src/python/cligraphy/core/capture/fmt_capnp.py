@@ -54,7 +54,7 @@ class CapnpSessionRecorder(capture.Recorder):
         window_size = session.init('windowSize')
         window_size.lines, window_size.columns = get_terminal_size()
 
-        environ = os.environ.items()
+        environ = list(os.environ.items())
         session_env = session.init('environment', len(environ))
         for index, item in enumerate(environ):
             session_env[index].name = item[0]

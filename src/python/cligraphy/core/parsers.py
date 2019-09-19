@@ -180,7 +180,7 @@ class SmartCommandMapParser(BaseParser):
             self.flat_map[(command_path + ' ' + name).strip()] = module_name + '.' + name
         else:
             sub = self.add_namespace(name, subparser)
-            for sub_node in node.iteritems():
+            for sub_node in node.items():
                 self.add_item(sub, module_name + '.' + name, sub_node, command_path + ' ' + name)
 
     def add_command_map(self, namespace, command_map):
@@ -189,7 +189,7 @@ class SmartCommandMapParser(BaseParser):
             sub = self.add_namespace(namespace, self.root_sub)
 
         module_name = command_map['module']
-        for item in command_map['commands'].iteritems():
+        for item in command_map['commands'].items():
             self.add_item(sub, module_name, item, namespace)
 
     def pre_parse_args(self, args):
@@ -204,7 +204,7 @@ class SmartCommandMapParser(BaseParser):
             if pe.message == 'too few arguments':
                 pe.report()
             logging.debug('Could not parse command line args [%s], attempting fuzzy matching', args)
-            fixed_args, matches = attempt_fuzzy_matching(args, self.flat_map.keys())
+            fixed_args, matches = attempt_fuzzy_matching(args, list(self.flat_map.keys()))
             if fixed_args:
                 logging.info('Your input "%s" matches "%s"', ' '.join(args), ' '.join(fixed_args))
                 FUZZY_PARSED.append((' '.join(args), ' '.join(fixed_args)))

@@ -260,7 +260,7 @@ def exec_command(client, command, command_timeout=DEFAULT_COMMAND_TIMEOUT,
 
     try:
         if put_files:
-            for path, content in put_files.items():
+            for path, content in list(put_files.items()):
                 with sftp.open(path, 'wb') as remote_fp:
                     remote_fp.write(content)
 

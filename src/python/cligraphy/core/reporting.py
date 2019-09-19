@@ -4,7 +4,7 @@
 from cligraphy.core.tracking import TRACKING
 
 import threading
-from Queue import Queue, Empty, Full
+from queue import Queue, Empty, Full
 import collections
 
 import requests

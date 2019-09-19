@@ -51,7 +51,7 @@ __CONF_SUBST_RE = re.compile(r'(%cfg.([a-zA-Z0-9.-_]+)%)')
 
 def dictify_recursive(obj):
     """Transforms an attrdict tree into regular python dicts"""
-    for key, val in obj.iteritems():
+    for key, val in obj.items():
         if isinstance(val, AttrDict):
             obj[key] = dictify_recursive(val)
     return dict(**obj)
@@ -60,7 +60,7 @@ def dictify_recursive(obj):
 def update_recursive(base, overlay):
     """Resursively update base with values from overlay
     """
-    for key, val in overlay.iteritems():
+    for key, val in overlay.items():
         if isinstance(val, collections.Mapping):
             base[key] = update_recursive(base.get(key, {}), val)
         else:
@@ -90,13 +90,13 @@ def _resolve_config(root, subst_re, node=None):
     if node is None:
         node = root
     remaining = []
-    for key, val in node.iteritems():
+    for key, val in node.items():
         if isinstance(val, collections.Mapping):
             remaining.extend(_resolve_config(root, subst_re, node=val))
-        elif isinstance(val, basestring):
+        elif isinstance(val, str):
             for match, confkey in subst_re.findall(val):
                 confval = get(root, confkey)
-                if confval is not None and (not isinstance(confval, basestring) or subst_re.search(confval) is None):
+                if confval is not None and (not isinstance(confval, str) or subst_re.search(confval) is None):
                     node[key] = val = val.replace(match, str(confval))
                 else:
                     remaining.append('%s: %s' % (key, val))
@@ -152,7 +152,7 @@ def read_configuration(cligraph, custom_suffix=''):
     layers['shared'] = [os.path.join(cligraph.tool_path, 'conf/%s.yaml' % cligraph.tool_shortname), None]
     layers['custom'] = [os.path.join(os.path.abspath(os.path.expanduser('~/.' + cligraph.tool_shortname)), '%s.yaml%s' % (cligraph.tool_shortname, custom_suffix)), None]
 
-    for layer_name, layer_data in layers.items():
+    for layer_name, layer_data in list(layers.items()):
         if callable(layer_data[0]):
             layer = layer_data[0](cligraph, layer_name)
         else:

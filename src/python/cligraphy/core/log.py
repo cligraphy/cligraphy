@@ -96,7 +96,7 @@ class JsonHandler(logging.Handler):
         except (KeyboardInterrupt, SystemExit):
             raise
         except:  # pylint:disable=bare-except
-            print 'log.structured: serialization error - details follow'
+            print('log.structured: serialization error - details follow')
             print(output)
             self.handleError(record)
 
