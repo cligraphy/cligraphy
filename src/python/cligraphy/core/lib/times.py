@@ -39,7 +39,7 @@ def parse_time(human_time):
         unit = human_time[-1]
         value = int(human_time[:-1])
         return now - (value * UNITS[unit])
-    except:
+    except Exception:
         raise Exception("Dont know what to do with time [%s]" % human_time)
 
 
@@ -50,11 +50,11 @@ def parse_datetime(human_time):
     """
     try:
         return datetime.fromtimestamp(parse_time(human_time))
-    except:
+    except Exception:
         try:
             dt = parser.parse(human_time)
             return dt
-        except:
+        except Exception:
             raise Exception("Dont know what to do with time [%s]" % human_time)
 
 

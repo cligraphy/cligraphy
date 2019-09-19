@@ -70,7 +70,7 @@ def update_recursive(base, overlay):
 def find_node(node, path, add=False):
     """Find a node in a dict tree. Path is the broken down path (array). Add missing nodes if add=True."""
     for part in path:
-        if not node or not part in node:
+        if not node or part not in node:
             if add:
                 node[part] = {}
             else:

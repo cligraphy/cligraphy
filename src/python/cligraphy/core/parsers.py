@@ -356,7 +356,7 @@ class AutoDiscoveryCommandMap(object):
         for module in find_command_modules(self.root_module_name, root_module.__path__):
             package_name, _, module_name = module.__name__.rpartition(".")
             assert package_name.startswith(self.root_module_name)
-            package_name = package_name[len(self.root_module_name) + 1 :]
+            package_name = package_name[len(self.root_module_name) + 1:]
             logging.debug("Configuring parser for %s.%s", package_name, module_name)
             halp, desc = self.parse_help(module)
             data = {"type": "cmd", "help": halp, "desc": desc}

@@ -66,7 +66,9 @@ def call_chain(chain, *args, **kwargs):
 
 
 def profiling_wrapper(func):
-    import cProfile, io, pstats
+    import cProfile
+    import io
+    import pstats
 
     pr = cProfile.Profile()
     pr.enable()

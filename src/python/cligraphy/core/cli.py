@@ -39,7 +39,7 @@ def _warn_about_bad_non_ascii_chars(args):
         bad = [char in bad_chars for char in line]
         if any(bad):
             logging.warning(
-                "Your command line contains %d bad unicode character(s), did you copy/paste from a tool that garbles text?",
+                "Your command line contains %d bad unicode character(s)",
                 len(bad),
             )
             logging.warning("> " + line)
@@ -133,14 +133,15 @@ class Cligraph(object):
 
             requests.utils.default_headers = _default_headers
             requests.sessions.default_headers = _default_headers
-        except:
+        except Exception:
             logging.warn("Could set up requests audit headers, continuing anyway")
             pass
 
     # pylint:disable=protected-access
     def _run(self, args):
-        """Run command by calling the main() function correctly (how we pass args depends on its actual signature)."""
-        # if the main method has been decorated, we need to look at the original function's argspec (but call the wrapper)
+        """Run command by calling the main() function correctly (how we pass args depends on its actual signature).
+        I the main method has been decorated, we need to look at the original function's argspec (but call the wrapper)
+        """
         import inspect
 
         orig_func, _ = undecorate_func(args._func)
@@ -279,8 +280,8 @@ class Cligraph(object):
     def get_command_maps(self, autodiscover=False):
         """Get all the command maps defined in our configuration.
 
-        If autodiscover is True (defaults to False), python commands will be autodiscovered (instead of simply being obtained
-        from a cached command map).
+        If autodiscover is True (defaults to False), python commands will be
+        autodiscovered (instead of simply being obtained from a cached command map).
 
         :param autodiscover: (default - `False`) Whether or not to autodiscover commands
         :type autodiscover: bool
