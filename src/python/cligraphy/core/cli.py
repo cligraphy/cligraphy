@@ -259,7 +259,7 @@ class Cligraph(object):
                 if opt_type == 'python':
                     result.append((opt_namespace, AutoDiscoveryCommandMap(self, module).build(force_autodiscover=autodiscover)))
                 else:
-                    raise Exception('Dont know how to handle commands module with type [%s]', opt_type)
+                    raise Exception('Dont know how to handle commands module with type [%s]' % opt_type)
             except Exception as exc:  # pylint:disable=broad-except
                 logging.warning('Could not configure commands module [%s] defined in configuration: %s. Skipping it.', module, exc,
                                 exc_info=True)
