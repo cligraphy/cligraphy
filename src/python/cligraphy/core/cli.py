@@ -16,7 +16,7 @@ from cligraphy.core.parsers import (
 from cligraphy.core.reporting import ToolsPadReporter, NoopReporter
 from cligraphy.core.util import undecorate_func, pdb_wrapper, profiling_wrapper, call_chain
 
-from remember.memoize import memoize
+from cachetools import cached
 
 import faulthandler
 from setproctitle import setproctitle  # pylint:disable=no-name-in-module
@@ -276,7 +276,7 @@ class Cligraph(object):
 
         return args
 
-    @memoize()
+    @cached(cache={})
     def get_command_maps(self, autodiscover=False):
         """Get all the command maps defined in our configuration.
 

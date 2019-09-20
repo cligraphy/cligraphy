@@ -1,5 +1,6 @@
 argcomplete>=1.0.0
 attrdict>=2.0.0
+cachetools>=3.1.1
 certifi>=2015.11.20
 colorclass>=2.2.0
 colorlog>=2.6.0
@@ -17,7 +18,6 @@ pathlib==1.0.1
 pytz>=2015.7
 PyYAML>=3.12
 redis>=2.10.5
-remember>=0.1
 requests>=2.11.1
 requests_cache>=0.4.10
 setproctitle>=1.1.9

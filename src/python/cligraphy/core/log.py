@@ -5,7 +5,7 @@
 
 from cligraphy.core.util import try_import
 
-from remember import memoize
+from cachetools import cached
 
 import json
 import logging
@@ -104,7 +104,7 @@ def silence_verbose_loggers():
     logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(logging.WARN)
 
 
-@memoize.memoize()
+@cached(cache={})
 def _get_dict_config():
     dict_config = {
         "version": 1,
