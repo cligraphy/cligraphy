@@ -16,5 +16,13 @@ setup(
     setup_requires=[
         'setupmeta'
     ],
-
+    extras_require={
+        'dev': [
+            'black',
+            'check-manifest',
+            'flake8',
+            'pytest',
+            'pycodestyle',
+        ],
+    },
 )
