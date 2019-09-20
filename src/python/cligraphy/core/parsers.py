@@ -16,7 +16,6 @@ import sys
 import time
 from contextlib import contextmanager
 
-
 try:
     import gevent.monkey as gevent_monkey
 except ImportError:
@@ -223,7 +222,11 @@ class SmartCommandMapParser(BaseParser):
             else:
                 pe.report()
 
-        return args, parsed_args._func()
+        try:
+            return args, parsed_args._func()
+        except AttributeError:
+            logging.error("known cligraphy bug with python 3, see https://github.com/cligraphy/cligraphy/issues/1")
+            raise
 
     def parse_args(self, args=None):
         if args is None:
@@ -265,7 +268,7 @@ def find_command_modules(prefix, path):
 
             if detect_monkey_patch():
                 logging.error("gevent monkey patching detected after module %s was loaded", module_name)
-                raise Exception("monkey patching is not allowed in oc command modules")
+                raise Exception("monkey patching is not allowed in cligraphy command modules")
 
             if getattr(mod, "main", None):
                 yield mod
