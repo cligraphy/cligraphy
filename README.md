@@ -1,8 +1,3 @@
-cligraphy - A command line toolkit
-==================================
+# Work in progress!
 
-# Overview
-
-cligraphy is a python framework to help develop, share and run command line tools.
-
-
+Copied stuff here from the skunkswork repo to work on python 3 compat
