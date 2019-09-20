@@ -27,3 +27,4 @@ parts
 pip-log.txt
 sdist
 var
+.eggs
