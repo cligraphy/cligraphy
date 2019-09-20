@@ -35,7 +35,7 @@ def _warn_about_bad_non_ascii_chars(args):
     """Detect non-ascii variants of some interesting characters, such as — instead of -"""
     bad_chars = ("—", "…", "“", "”", "\u200b")  # zero-width space
     try:
-        line = " ".join(arg.decode(sys.stdout.encoding or "UTF-8") for arg in args)
+        line = " ".join(args)
         bad = [char in bad_chars for char in line]
         if any(bad):
             logging.warning(
