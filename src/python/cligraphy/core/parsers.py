@@ -147,7 +147,8 @@ class BaseParser(argparse.ArgumentParser):
 class SmartCommandMapParser(BaseParser):
     def __init__(self, *args, **kwargs):
         super(SmartCommandMapParser, self).__init__(*args, **kwargs)
-        self.root_sub = self.add_subparsers(help="Available sub-commands", parser_class=BaseParser)
+        self.root_sub = self.add_subparsers(help="Available sub-commands", parser_class=BaseParser, dest='sub-command')
+        self.root_sub.required = True
         self.sub_map = {"": self.root_sub}
         self.flat_map = {}
 
@@ -157,7 +158,8 @@ class SmartCommandMapParser(BaseParser):
             namespace, help=desc, description=desc, formatter_class=CustomDescriptionFormatter, add_help=False
         )
         temp.add_argument("-h", "--help", dest="_help", action=argparse._HelpAction)
-        sub = temp.add_subparsers(help="Available sub-commands", parser_class=BaseParser)
+        sub = temp.add_subparsers(help="Available sub-commands", parser_class=BaseParser, dest='sub-command')
+        sub.required = True
         self.sub_map[namespace] = sub
         return sub
 
