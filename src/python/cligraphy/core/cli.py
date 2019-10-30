@@ -75,7 +75,7 @@ class _VersionAction(argparse.Action):
     def __call__(self, *args, **kwargs):
         try:
             os.chdir(ctx.conf.tool.repo_path)
-            last_commit = subprocess.check_output(["git", "log", "-1"], stderr=subprocess.PIPE)
+            last_commit = subprocess.check_output(["git", "log", "-1"], stderr=subprocess.PIPE).decode('utf-8')
         except (subprocess.CalledProcessError, OSError):
             last_commit = "(could not get more recent commit information)"
         print("%s v%s\n%s" % (ctx.conf.tool.name, ctx.conf.tool.version, last_commit))
