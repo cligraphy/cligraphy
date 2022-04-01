@@ -57,7 +57,6 @@ def _warn_about_bad_non_ascii_chars(args):
 def _warn_about_bad_path(env_root, path):
     """Warn about mistakes in $PATH"""
     if not env_root:
-        logging.warning("Running oc outside of its virtualenv is supported, but untested. Please report any bugs!")
         return
     env_bin = os.path.join(env_root, "bin")
     elements = path.split(":")
