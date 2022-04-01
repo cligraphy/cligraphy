@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name = 'cligraphy',
-    version = '0.1.0',
+    version = '0.1.1',
     description = 'Cligraphy Command line tools',
     long_description = 'Cligraphy Command line tools',
     author = 'Netflix, Inc.',
