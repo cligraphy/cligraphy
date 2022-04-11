@@ -343,7 +343,7 @@ class AutoDiscoveryCommandMap(object):
             sub = parent[package_name] = self.package_nodes[complete_package_name] = {}
         return sub
 
-    def build(self, force_autodiscover=False):
+    def build(self, force_autodiscover=False, break_if_unavailable=False):
         root_module = importlib.import_module(self.root_module_name)
 
         cached_command_map_filename = os.getenv(
@@ -373,6 +373,8 @@ class AutoDiscoveryCommandMap(object):
             logging.warning("The following modules are not available:")
             for name, msg in UNAVAILABLE_MODULES:
                 logging.warning("    %s: %s", name, msg)
+            if break_if_unavailable:
+                raise Exception("some commands are not available")
 
         command_map = {"module": self.root_module_name, "commands": self.root_node}
 

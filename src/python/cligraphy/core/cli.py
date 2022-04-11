@@ -279,7 +279,7 @@ class Cligraph(object):
         return args
 
     @cached(cache={})
-    def get_command_maps(self, autodiscover=False):
+    def get_command_maps(self, autodiscover=False, break_if_unavailable=True):
         """Get all the command maps defined in our configuration.
 
         If autodiscover is True (defaults to False), python commands will be
@@ -287,6 +287,7 @@ class Cligraph(object):
 
         :param autodiscover: (default - `False`) Whether or not to autodiscover commands
         :type autodiscover: bool
+        :param break_if_unavailable: (default - `False`) If command should raise an exception if there are unavailable commands
         :return: A dictionary containing the command map
         :rtype: dict
         """
@@ -303,7 +304,8 @@ class Cligraph(object):
 
                 if opt_type == "python":
                     result.append(
-                        (opt_namespace, AutoDiscoveryCommandMap(self, module).build(force_autodiscover=autodiscover))
+                        (opt_namespace, AutoDiscoveryCommandMap(self, module).build(force_autodiscover=autodiscover,
+                                                                                    break_if_unavailable=break_if_unavailable))
                     )
                 else:
                     raise Exception("Dont know how to handle commands module with type [%s]" % opt_type)
@@ -314,6 +316,8 @@ class Cligraph(object):
                     exc,
                     exc_info=True,
                 )
+                if break_if_unavailable:
+                    raise exc
 
         return result
 
