@@ -27,7 +27,7 @@ def main(args):
         return 1
 
     value = node.pop(parts[-1])
-    if isinstance(value, collections.Mapping) and not args.force:
+    if isinstance(value, collections.abc.Mapping) and not args.force:
         print 'key %s has sub keys, not removing. use -f to force.' % (args.name)
         return 2
 
