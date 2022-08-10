@@ -60,7 +60,7 @@ def update_recursive(base, overlay):
     """Resursively update base with values from overlay
     """
     for key, val in overlay.items():
-        if isinstance(val, collections.Mapping):
+        if isinstance(val, collections.abc.Mapping):
             base[key] = update_recursive(base.get(key, {}), val)
         else:
             base[key] = overlay[key]
@@ -90,7 +90,7 @@ def _resolve_config(root, subst_re, node=None):
         node = root
     remaining = []
     for key, val in node.items():
-        if isinstance(val, collections.Mapping):
+        if isinstance(val, collections.abc.Mapping):
             remaining.extend(_resolve_config(root, subst_re, node=val))
         elif isinstance(val, str):
             for match, confkey in subst_re.findall(val):
