@@ -60,7 +60,7 @@ def update_recursive(base, overlay):
     """Resursively update base with values from overlay
     """
     for key, val in overlay.items():
-        if isinstance(val, collections.Mapping):
+        if isinstance(val, collections.abc.Mapping):
             base[key] = update_recursive(base.get(key, {}), val)
         else:
             base[key] = overlay[key]
