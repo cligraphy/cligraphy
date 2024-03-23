@@ -5,7 +5,6 @@
 import argparse
 import copy
 import functools
-import imp
 import importlib
 import json
 import logging
@@ -14,6 +13,7 @@ import os.path
 import pkgutil
 import sys
 import time
+import types
 from contextlib import contextmanager
 
 try:
@@ -244,7 +244,7 @@ def detect_monkey_patch():
 def error_module(module_name, exc):
     message = "%s: %s" % (exc.__class__.__name__, exc)
     UNAVAILABLE_MODULES.append((module_name, message))
-    mod = imp.new_module(module_name)
+    mod = types.ModuleType(module_name)
     mod.__file__ = "__%s_error_stub__" % module_name
     mod.__doc__ = message
     mod.__error__ = True
